@@ -1,38 +1,30 @@
 import collections, types
 class IndexMap:
 	"""Must Define _define_text_map and _define_save_map"""
-	def getText(self, indices):
-		if (isinstance(indices, str) or not isinstance(indices, collections.Iterable)):
-			v = [ indices ]
-		else:
-			v = indices
 
+	def __iterProof(self, val):
+		if (isinstance(val, str) or not isinstance(val, collections.Iterable)):
+			return [ val ]
+		return val
+
+	def getText(self, indices):
+		v = self.__iterProof(indices)
 		val = []
 		for i in v:
 			val.append(self._text_mapping[i])
 		return (val)
 
 	def getSave(self, indices):
-		if (isinstance(indices, str) or not isinstance(indices, collections.Iterable)):
-			v = [ indices ]
-		else:
-			v = indices
-
+		v = self.__iterProof(indices)
 		val = []
 		for i in v:
 			val.append(self._save_mapping[i])
 		return(val)
 
 	def getFromSave(self, saveValue):
-		if (isinstance(saveValue, str) or not isinstance(saveValue, collections.Iterable)):
-			v = [ saveValue ]
-		else:
-			v = saveValue
-
+		v = self.__iterProof(saveValue)
 		val = []
-		#print(v)
 		for i in v:
-			#print (i)
 			index = 0
 			for j in self._save_mapping:
 				if i == j:
