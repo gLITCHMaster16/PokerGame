@@ -1,10 +1,12 @@
 from cards.deck import Deck
 from cards.indexMaps import AlphaMap
-#from Deck import
 
 deck1 = Deck()
 mapping1 = AlphaMap()
 
-drawn = deck1.draw(13)
-for i in mapping1.getSave(drawn):
-	print(i + ": " + str(mapping1.getFromSave(i)))
+drawn = []
+while input("Draw? (y, n) ").lower() != "n":
+	d = deck1.draw()[0]
+	print("You drew a " + str(mapping1.getText(d)[0]))
+	drawn.append(d)
+	print("You have a " + ", ".join(mapping1.getText(drawn)) + " in your hand.")

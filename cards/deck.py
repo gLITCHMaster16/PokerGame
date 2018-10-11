@@ -1,15 +1,16 @@
 import random
+
+class DeckError(ValueError):
+	"""Raise when there is an error with the deck"""
+
 class Deck:
 	def __draw(self):
-		index = random.randint(0, 51)
-		inDeck = 0
-		for i in self.cardsInDeck:
-			if i == True:
-				inDeck += 1
+		index = random.randint(0, self._card_count-1)
+		inDeck = self.cardCount()
 		if inDeck == 0:
-			return -1
+			raise DeckError("You Can't Draw From an Empty Deck!")
 		while self.cardsInDeck[index] == False:
-			index = random.randint(0, 51)
+			index = random.randint(0, self._card_count-1)
 		self.cardsInDeck[index] = False
 		return index
 
@@ -19,8 +20,19 @@ class Deck:
 			cards.append(self.__draw())
 		return cards
 
-	def __init__(self):
-		#print("init") # Traceback
+	def cardCount(self):
+		inDeck = 0
+		for i in self.cardsInDeck:
+			if i == True:
+				inDeck += 1
+		return inDeck
+
+	def __init__(self, cardCount=52):
+		"""
+		Sets up a basic deck of arbitrary length.
+		cardCount: Amount of cards in the deck. Defaults to 52.
+		"""
+		self._card_count = cardCount
 		self.cardsInDeck = []
-		for i in range(52):
+		for i in range(self._card_count):
 			self.cardsInDeck.append(True)
