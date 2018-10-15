@@ -8,7 +8,7 @@ class Deck:
 		index = random.randint(0, self._card_count-1)
 		inDeck = self.cardCount()
 		if inDeck == 0:
-			raise DeckError("You Can't Draw From an Empty Deck!")
+			return -1
 		while self.cardsInDeck[index] == False:
 			index = random.randint(0, self._card_count-1)
 		self.cardsInDeck[index] = False
