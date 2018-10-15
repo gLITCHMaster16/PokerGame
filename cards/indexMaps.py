@@ -1,4 +1,4 @@
-import collections, types
+import collections, types, math
 class IndexMap:
 	"""Must Define _define_text_map and _define_save_map"""
 
@@ -65,4 +65,4 @@ class AlphaMap( IndexMap ):
 
 	def _define_rank_map(self):
 		for i in range(self._card_count):
-			self._rank_mapping.append([ i % 4, i % 13 ])
+			self._rank_mapping.append([i % 4, math.floor(i / 4)])
