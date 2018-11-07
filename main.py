@@ -1,6 +1,7 @@
 from cards.deck import Deck
 from cards.indexMaps import AlphaMap
 from game.cardSet import CardSet
+from cards.handRank import *
 
 def testAlphaMap():
 	mapping1 = AlphaMap()
@@ -10,7 +11,7 @@ def testAlphaMap():
 		if i % 13 == 0: print()
 		print(str(mapping1.getText(i)[0]) + " "*c + str(mapping1.getSave(i)[0]) + " "*v + str(mapping1.getRank(i)[0]))
 
-def testHandRank():
+def testHandSort():
 	deck1 = Deck()
 	mapping1 = AlphaMap()
 
@@ -40,14 +41,33 @@ def testDraw():
 def testSort():
 	mapping1 = AlphaMap()
 	deck1 = Deck()
-	set = deck1.draw(52)
+	set = deck1.draw(13)
 	print(mapping1.getRank(set))
 
 	set = mapping1.sortByRank(set)
 
 	print(mapping1.getRank(set))
 
+def testRank():
+	mapping1 = AlphaMap()
+	# cards = mapping1.getFromSave(["H6", "S6", "C3", "H3", "C6"])
+	ranker1 = HandRank(mapping1)
+	# ranker1.getHandRank(cards)
+
+	deck1 = Deck()
+	cards = []
+	for i in range(5):
+		cards.append(deck1.draw(5))
+	cards.append(mapping1.getFromSave(["S12", "S8", "S5", "S7", "S11"]))
+	cards.append(mapping1.getFromSave(["S12", "S11", "S10", "S9", "S0"]))
+	cards.append(mapping1.getFromSave(["H6", "S6", "C3", "H3", "C6"]))
+	for i in cards:
+		c = ranker1.getHandRank(i)
+		print(mapping1.getText(i), c[0], mapping1.getText(c[1])[0])
+
+
+
 
 ################################################################################
 
-testSort()
+testRank()

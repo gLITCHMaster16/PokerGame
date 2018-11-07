@@ -1,5 +1,6 @@
 from enum import Enum
 from cards.indexMaps import *
+import copy
 
 class ranks( Enum ):
     ROYAL_FLUSH = 9
@@ -17,6 +18,7 @@ class ranks( Enum ):
 class HandRank:
     def _getHandRank(self, hand):
         hand = self._IndexMapping.sortByRank(hand)
+        _hand = copy.deepcopy(hand)
         hand = self._IndexMapping.getRank(hand)
         # print(hand)
 
@@ -26,11 +28,11 @@ class HandRank:
             if hand[1][0] == n-1 and hand[2][0] == n-2 and hand[3][0] == n-3 and hand[4][0] == n-4:
                 # Straight
                 if n == 12:
-                    return ranks.ROYAL_FLUSH, hand[0] # ROYAL FLUSH
+                    return ranks.ROYAL_FLUSH, _hand[0] # ROYAL FLUSH
                 else:
-                    return ranks.STRAIGHT_FLUSH, hand[0] # STRAIGHT FLUSH
+                    return ranks.STRAIGHT_FLUSH, _hand[0] # STRAIGHT FLUSH
             else:
-                return ranks.FLUSH, hand[0] # FLUSH
+                return ranks.FLUSH, _hand[0] # FLUSH
         else:
             cc = []
             for i in hand:
@@ -47,22 +49,26 @@ class HandRank:
                 if cc[0][1] > 2:
                     if cc[0][1] == 4: # Four of card
                         if hand[0][0] == hand[1][0]:
-                            return ranks.FOUR_OF, hand[0]
+                            return ranks.FOUR_OF, _hand[0]
                         else:
-                            return ranks.FOUR_OF, hand[1]
+                            return ranks.FOUR_OF, _hand[1]
                     else:
                         if cc[1][1] > 1:
                             while hand[0][0] != hand[2][0]:
                                 hand.pop(0)
-                            return ranks.FULL_HOUSE, hand[0]
+                            return ranks.FULL_HOUSE, _hand[0]
                         else:
                             while hand[0][0] != hand[1][0]:
                                 hand.pop(0)
-                            return ranks.THREE_OF, hand[0]
+                            return ranks.THREE_OF, _hand[0]
                 elif cc[1][1] == 2:
-                    return ranks.TWO_PAIR, hand[0]
+                    while hand[0][0] != cc[0][0]:
+                        hand.pop(0)
+                    return ranks.TWO_PAIR, _hand[0]
                 else:
-                    return ranks.PAIR, hand[0]
+                    while hand[0][0] != cc[0][0]:
+                        hand.pop(0)
+                    return ranks.PAIR, _hand[0]
 
 
 
@@ -70,10 +76,10 @@ class HandRank:
                 n = hand[0][0]
                 if hand[1][0] == n-1 and hand[2][0] == n-2 and hand[3][0] == n-3 and hand[4][0] == n-4:
                     # Straight
-                    return ranks.STRAIGHT, hand[0]
+                    return ranks.STRAIGHT, _hand[0]
                 else:
                     # High card
-                    return ranks.HIGH_CARD, hand[0]
+                    return ranks.HIGH_CARD, _hand[0]
 
     def getHandRank(self, hand):
         """getHandRank"""

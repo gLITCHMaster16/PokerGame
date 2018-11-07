@@ -86,6 +86,19 @@ class IndexMap:
 			val.append(self._rank_mapping[i])
 		return val
 
+	def getFromRank(self, ranks:"Set of ranks") -> []:
+		v = self.__iterProof(ranks)
+		val = []
+		for i in v:
+			index = 0
+			for j in self._rank_mapping:
+				if i == j:
+					val.append(index)
+					continue
+				index += 1
+		return val
+
+
 	def sortByRank(self, indices):
 		indices = self.__iterProof(indices)
 		tree = IndexTree(self)
